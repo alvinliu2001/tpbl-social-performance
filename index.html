@@ -452,6 +452,15 @@
       text-align: left;
       font-size: 12px;
     }
+    tfoot td {
+      position: sticky;
+      bottom: 0;
+      z-index: 1;
+      background: var(--recessed);
+      border-top: 1px solid var(--line);
+      font-weight: 500;
+    }
+    tfoot td:first-child { color: var(--text); }
     .num { text-align: right; font-variant-numeric: tabular-nums; }
     .monthly { overflow-x: auto; overflow-y: visible; }
     .monthly table { min-width: 1120px; }
@@ -918,6 +927,7 @@
               </tr>
             </thead>
             <tbody id="monthRows"></tbody>
+            <tfoot id="monthTotals"></tfoot>
           </table>
         </div>
       </section>
@@ -1250,6 +1260,20 @@
         if (state.platformFilter === 'instagram') return row.p === 'instagram';
         return true;
       });
+      const latestMonth = rows.reduce((latest, row) => !latest || row.m > latest ? row.m : latest, '');
+      const latestRows = rows.filter(row => row.m === latestMonth);
+      const endingFollowers = latestRows.reduce((acc, row) => acc + (row.ft || 0), 0);
+      const sumViews = rows.reduce((acc, row) => acc + (row.v || 0), 0);
+      const sumReach = rows.reduce((acc, row) => acc + (row.r || 0), 0);
+      const sumInteractions = rows.reduce((acc, row) => acc + (row.ti || 0), 0);
+      const growthRows = rows.filter(row => Number.isFinite(row.nfg));
+      const engagementRows = rows.filter(row => Number.isFinite(row.er));
+      const avgGrowth = growthRows.length
+        ? growthRows.reduce((acc, row) => acc + (row.nfg || 0), 0) / growthRows.length
+        : null;
+      const avgEngagement = engagementRows.length
+        ? engagementRows.reduce((acc, row) => acc + (row.er || 0), 0) / engagementRows.length
+        : null;
       qs('monthRows').innerHTML = rows.map(row => `
         <tr data-month="${esc(row.m)}" data-platform="${esc(row.p)}">
           <td>${esc(row.m)}</td>
@@ -1261,6 +1285,17 @@
           <td class="num">${fmt.format(row.ti || 0)}</td>
           <td class="num">${pct(row.er)}</td>
         </tr>`).join('');
+      qs('monthTotals').innerHTML = rows.length ? `
+        <tr>
+          <td>合計 / 平均</td>
+          <td>${fmt.format(rows.length)} 筆</td>
+          <td class="num">${endingFollowers ? fmt.format(endingFollowers) : '-'}</td>
+          <td class="num">${avgGrowth == null ? '-' : fmt.format(Math.round(avgGrowth))}</td>
+          <td class="num">${fmt.format(sumViews)}</td>
+          <td class="num">${fmt.format(sumReach)}</td>
+          <td class="num">${fmt.format(sumInteractions)}</td>
+          <td class="num">${pct(avgEngagement)}</td>
+        </tr>` : '';
     }
 
     function trendRowsForView() {
