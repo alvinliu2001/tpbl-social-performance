@@ -749,6 +749,18 @@
       font-size: 15px;
       line-height: 1.6;
     }
+    .site-footer {
+      display: grid;
+      gap: 6px;
+      justify-items: center;
+      padding: 28px 16px 32px;
+      background: #171717;
+      color: #5f6b7a;
+      font-size: 13px;
+      line-height: 1.4;
+      text-align: center;
+    }
+    .site-footer p { margin: 0; }
     @media (max-width: 1120px) {
       .site-header { padding: 0 24px; }
       .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -983,6 +995,11 @@
       </div>
     </section>
   </div>
+
+  <footer class="site-footer">
+    <p>powered by Alvin LIU</p>
+    <p>© TPBL 2025 All rights reserved.</p>
+  </footer>
 
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="dialog">
