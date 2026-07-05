@@ -550,6 +550,19 @@
       padding: 20px 24px 24px;
       align-items: stretch;
     }
+    .youtube-video-summary {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      padding: 20px 24px 0;
+    }
+    .youtube-video-summary .subscription-card {
+      min-height: 92px;
+      padding: 16px;
+    }
+    .youtube-video-summary .subscription-card strong {
+      font-size: 22px;
+    }
     .youtube-series-card {
       display: grid;
       grid-template-rows: auto repeat(5, minmax(76px, 1fr));
@@ -1123,6 +1136,7 @@
       .grid { grid-template-columns: 1fr; }
       .youtube-grid { grid-template-columns: 1fr; }
       .subscription-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .youtube-video-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .youtube-series-grid { grid-template-columns: 1fr; }
       .insight-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .interaction-breakdown { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1153,6 +1167,7 @@
       .kpis { grid-template-columns: 1fr; }
       .youtube-kpis { grid-template-columns: 1fr 1fr; }
       [data-active-tab="youtube"] h1 { font-size: 30px; }
+      .youtube-video-summary { grid-template-columns: 1fr 1fr; padding: 16px 16px 0; }
       .kpi {
         min-height: auto;
         padding: 20px;
@@ -1444,6 +1459,7 @@
             </div>
           </div>
         </div>
+        <div class="youtube-video-summary" id="youtubeVideoSummary"></div>
         <div class="youtube-series-grid" id="youtubeSeriesTop"></div>
       </section>
 
@@ -1839,6 +1855,7 @@
       document.querySelectorAll('[data-youtube-season]').forEach(button => {
         button.classList.toggle('active', button.dataset.youtubeSeason === state.youtubeVideoSeason);
       });
+      renderYoutubeVideoSummary(videos);
       const bySeries = new Map();
       videos.forEach(video => {
         if (!bySeries.has(video.series)) bySeries.set(video.series, []);
@@ -1876,6 +1893,32 @@
               </div>`).join('')}
           </article>`;
       }).join('') || '<p class="hint" style="padding:20px 24px;">目前沒有可用的 YouTube 影片資料。</p>';
+    }
+
+    function renderYoutubeVideoSummary(videos) {
+      const totals = videos.reduce((acc, video) => {
+        acc.views += video.views || 0;
+        acc.likes += video.likes || 0;
+        acc.comments += video.comments || 0;
+        acc.shares += video.shares || 0;
+        acc.watchHours += video.watchHours || 0;
+        return acc;
+      }, { views: 0, likes: 0, comments: 0, shares: 0, watchHours: 0 });
+      const avgViews = videos.length ? totals.views / videos.length : 0;
+      const cards = [
+        ['上傳影片', fmt.format(videos.length), '目前篩選區間'],
+        ['總觀看次數', fmt.format(totals.views), '影片觀看加總'],
+        ['平均觀看次數', fmt.format(Math.round(avgViews)), '每支影片平均'],
+        ['總喜歡次數', fmt.format(totals.likes), '喜歡次數加總'],
+        ['總留言數', fmt.format(totals.comments), '已新增留言加總'],
+        ['總分享次數', fmt.format(totals.shares), '分享次數加總']
+      ];
+      qs('youtubeVideoSummary').innerHTML = cards.map(([label, value, note]) => `
+        <article class="subscription-card">
+          <span>${esc(label)}</span>
+          <strong>${esc(value)}</strong>
+          <span>${esc(note)}</span>
+        </article>`).join('');
     }
 
     function renderYoutubeDemographics() {
