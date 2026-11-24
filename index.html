@@ -207,6 +207,8 @@
       border-bottom: 1px solid var(--line);
       margin-bottom: 6px;
     }
+    .kpi-delta[hidden] { display: none; }
+    .season-btn:last-child:nth-child(odd) { grid-column: 1 / -1; }
     .season-btn {
       min-height: 34px;
       border: 1px solid var(--line);
@@ -1339,7 +1341,7 @@
       <div>
         <h1>Social Performance Dashboard</h1>
         <p class="sub">社群數據表現分析 & 洞察報告</p>
-        <p class="sub">貼文成效截至 2026/11/22；追蹤人數快照為 2026/11/21。Facebook 新版以瀏覽者人數銜接歷史觸及人數，Instagram 維持觸及人數；跨改版比較涉及指標口徑變更。</p>
+        <p class="sub">貼文成效截至 2026/11/22；追蹤人數快照為 2026/11/21。Facebook 新版瀏覽者人數併入觸及人數，沿用相同計算方式。</p>
       </div>
     </header>
 
@@ -1365,6 +1367,7 @@
             <div class="season-shortcuts" aria-label="賽季快捷篩選">
               <button class="season-btn" data-season="2024-25" type="button">24-25 賽季</button>
               <button class="season-btn" data-season="2025-26" type="button">25-26 賽季</button>
+              <button class="season-btn" data-season="2026-27" type="button">26-27 賽季</button>
             </div>
             <div id="monthOptions"></div>
           </div>
@@ -1376,7 +1379,7 @@
           <select id="sort">
             <option value="date_desc" selected>發布日期新到舊</option>
             <option value="views_desc">觀看次數高到低</option>
-            <option value="reach_desc">觸及／瀏覽者人數高到低</option>
+            <option value="reach_desc">觸及人數高到低</option>
             <option value="interactions_desc">總互動數高到低</option>
             <option value="er_desc">互動率高到低</option>
           </select>
@@ -1398,7 +1401,7 @@
       <section class="kpis" aria-label="核心指標">
         <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="目前篩選條件下的原始貼文列數；全部視角會加總 Facebook 與 Instagram，Instagram 包含協作貼文。">內容總數</span><strong id="kpiContentTotal">0</strong><span class="kpi-delta" id="kpiContentDelta">-</span></div>
         <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="目前篩選條件下的觀看次數加總。若切到單一平台，只計算該平台數字。">觀看次數</span><strong id="kpiViews">0</strong><span class="kpi-delta" id="kpiViewsDelta">-</span></div>
-        <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="Facebook 歷史資料為觸及，新版為瀏覽者人數（匯出欄名：瀏覽人數）；Instagram 為觸及。加總未跨貼文或平台去重。跨改版比較涉及口徑變更。">觸及／瀏覽者人數</span><strong id="kpiReach">0</strong><span class="kpi-delta" id="kpiReachDelta">-</span></div>
+        <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="Facebook 歷史資料為觸及，新版為瀏覽者人數（匯出欄名：瀏覽人數）；Instagram 為觸及。加總未跨貼文或平台去重。Facebook 新版瀏覽者人數併入觸及，沿用同期增減計算。">觸及人數</span><strong id="kpiReach">0</strong><span class="kpi-delta" id="kpiReachDelta">-</span></div>
         <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="心情或按讚、留言、分享與儲存等互動項目的加總；依平台匯出欄位可用性計算。">總互動數</span><strong id="kpiInteractions">0</strong><span class="kpi-delta" id="kpiInteractionsDelta">-</span></div>
         <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="目前篩選區間內最新月份的總追蹤人數；下方顯示此區間總追蹤人數實際增加多少，不和去年同期比較。">總追蹤人數</span><strong id="kpiFollowerTotal">-</strong><span class="kpi-delta" id="kpiFollowerDelta">-</span></div>
       </section>
@@ -1453,10 +1456,10 @@
 
     <section class="tab-panel" data-panel="detail" role="tabpanel">
       <section class="kpis" aria-label="最新月份核心指標">
-        <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="目前篩選條件下最新月份的貼文數。">內容總數</span><strong id="monthKpiContentTotal">-</strong><span class="kpi-delta" id="monthKpiContentDelta">-</span></div>
-        <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="目前篩選條件下最新月份的觀看次數，並與去年同月相比。">觀看次數</span><strong id="monthKpiViews">-</strong><span class="kpi-delta" id="monthKpiViewsDelta">-</span></div>
-        <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="最新月份的觸及／瀏覽者人數加總。Facebook 新版使用瀏覽者人數，歷史與 Instagram 使用觸及；跨改版比較涉及口徑變更。">觸及／瀏覽者人數</span><strong id="monthKpiReach">-</strong><span class="kpi-delta" id="monthKpiReachDelta">-</span></div>
-        <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="目前篩選條件下最新月份的總互動數，並與去年同月相比。">總互動數</span><strong id="monthKpiInteractions">-</strong><span class="kpi-delta" id="monthKpiInteractionsDelta">-</span></div>
+        <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="預設顯示最新月份的貼文數；選定日期區間後顯示區間貼文總數。">內容總數</span><strong id="monthKpiContentTotal">-</strong><span class="kpi-delta" id="monthKpiContentDelta">-</span></div>
+        <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="預設顯示最新月份的觀看次數；選定日期區間後加總該區間，並與去年同期相比。">觀看次數</span><strong id="monthKpiViews">-</strong><span class="kpi-delta" id="monthKpiViewsDelta">-</span></div>
+        <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="最新月份的觸及人數加總。Facebook 新版使用瀏覽者人數，歷史與 Instagram 使用觸及；Facebook 新版瀏覽者人數併入觸及，沿用同期增減計算。">觸及人數</span><strong id="monthKpiReach">-</strong><span class="kpi-delta" id="monthKpiReachDelta">-</span></div>
+        <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="預設顯示最新月份的總互動數；選定日期區間後加總該區間，並與去年同期相比。">總互動數</span><strong id="monthKpiInteractions">-</strong><span class="kpi-delta" id="monthKpiInteractionsDelta">-</span></div>
         <div class="kpi"><span class="metric-label has-tooltip" tabindex="0" data-tip="目前篩選條件下最新月份的總追蹤人數，並與去年同月相比。">總追蹤人數</span><strong id="monthKpiFollowers">-</strong><span class="kpi-delta" id="monthKpiFollowersDelta">-</span></div>
       </section>
 
@@ -1486,7 +1489,7 @@
                 <th class="num">總追蹤人數</th>
                 <th class="num">追蹤人數增長</th>
                 <th class="num">總觀看次數</th>
-                <th class="num">總觸及／瀏覽者人數</th>
+                <th class="num">總觸及人數</th>
                 <th class="num">總互動次數</th>
                 <th class="num">互動率</th>
               </tr>
@@ -1616,16 +1619,16 @@
           <p>以合併後的貼文內容為單位計算。若同一內容同時發布於 Facebook 與 Instagram，會被視為一則同步內容；切換平台視角時，則只計算該平台有發布的內容。</p>
         </article>
         <article class="method-card">
-          <h3>觀看次數、觸及／瀏覽者人數、總互動數</h3>
+          <h3>觀看次數、觸及人數、總互動數</h3>
           <p>Facebook 或 Instagram 視角只加總該平台數字；全部與同步內容視角使用合併後貼文內容的跨平台合計。總互動數為按讚/心情、留言、分享與儲存等互動欄位的加總；互動組成占比以各互動項目除以總互動數，平均每篇則以目前篩選內容數為分母。</p>
         </article>
         <article class="method-card">
           <h3>互動率</h3>
-          <p>單篇內容以總互動數除以觸及／瀏覽者人數計算。Facebook 歷史資料使用觸及，新版匯出使用瀏覽者人數（原始欄名：瀏覽人數）；Instagram 維持觸及。此為銜接呈現，兩種指標未確認完全同口徑；跨改版同期比較會標示口徑變更。人數加總未跨貼文或平台去重。分母為 0 或缺值時不計算互動率；排行榜與排序排除分母低於 1,000 的內容。</p>
+          <p>單篇內容以總互動數除以觸及人數計算。Facebook 新版瀏覽者人數（原始欄名：瀏覽人數）直接併入觸及欄位，沿用互動率與同期增減計算；Instagram 維持觸及。人數加總未跨貼文或平台去重。分母為 0 或缺值時不計算互動率；排行榜與排序排除分母低於 1,000 的內容。</p>
         </article>
         <article class="method-card">
           <h3>總追蹤人數與追蹤趨勢</h3>
-          <p>總追蹤人數取選定月份中最新月份的帳號總追蹤；全部視角為 Facebook 與 Instagram 加總。追蹤趨勢預設顯示近 12 個月，原因是 Meta 後台最多穩定檢視一年區間；若使用者另選月份或賽季，則依照選取範圍重繪。24-25 賽季為 2024-07 至 2025-06，25-26 賽季為 2025-07 至 2026-06。</p>
+          <p>總追蹤人數取選定月份中最新月份的帳號總追蹤；全部視角為 Facebook 與 Instagram 加總。追蹤趨勢預設顯示近 12 個月，原因是 Meta 後台最多穩定檢視一年區間；若使用者另選月份或賽季，則依照選取範圍重繪。24-25 賽季為 2024-07 至 2025-06，25-26 賽季為 2025-07 至 2026-06，26-27 賽季為 2026-07 至 2027-06；快捷篩選僅勾選已有資料的月份。</p>
         </article>
         <article class="method-card">
           <h3>同步內容合併</h3>
@@ -1669,7 +1672,8 @@
     const MIN_REACH_FOR_ER_RANKING = 1000;
     const seasons = {
       '2024-25': { label: '24-25 賽季', months: monthRange('2024-07', '2025-06') },
-      '2025-26': { label: '25-26 賽季', months: monthRange('2025-07', '2026-06') }
+      '2025-26': { label: '25-26 賽季', months: monthRange('2025-07', '2026-06') },
+      '2026-27': { label: '26-27 賽季', months: monthRange('2026-07', '2027-06') }
     };
 
     const allMonths = [...new Set(monthly.map(row => row.m))].sort().reverse();
@@ -2266,7 +2270,7 @@
     function overviewComparisonMonths() {
       const selected = getSelectedMonths().sort();
       if (selected.length) return { current: selected, previous: previousYearMonths(selected) };
-      const current = allMonths.slice(0, 12).sort();
+      const current = allMonths.slice(0, 1);
       return { current, previous: previousYearMonths(current) };
     }
 
@@ -2316,6 +2320,7 @@
 
     function renderKpiDelta(id, current, previous) {
       const el = qs(id);
+      el.hidden = false;
       el.classList.remove('positive', 'negative');
       if (!previous) {
         el.textContent = '去年同期無資料';
@@ -2326,15 +2331,9 @@
       el.classList.add(rate >= 0 ? 'positive' : 'negative');
     }
 
-    function markReachDefinitionChange(id) {
-      const el = qs(id);
-      el.textContent = '指標口徑變更';
-      el.classList.remove('positive', 'negative');
-      el.title = 'Facebook 新版分母使用瀏覽者人數，歷史使用觸及人數；暫不直接比較成長率。';
-    }
-
     function renderFollowerGrowthDelta(id, growth) {
       const el = qs(id);
+      el.hidden = false;
       el.classList.remove('positive', 'negative');
       if (growth == null || Number.isNaN(growth)) {
         el.textContent = '區間增加 -';
@@ -2351,27 +2350,17 @@
     }
 
     function renderKpis() {
-      const totals = state.filtered.reduce((acc, row) => {
-        const metrics = metricsForView(row);
-        acc.views += metrics.v || 0;
-        acc.reach += metrics.r || 0;
-        acc.interactions += metrics.ti || 0;
-        return acc;
-      }, { views: 0, reach: 0, interactions: 0 });
-      qs('kpiContentTotal').textContent = fmt.format(contentCountForView(state.filtered));
-      qs('kpiViews').textContent = fmt.format(totals.views);
-      qs('kpiReach').textContent = fmt.format(totals.reach);
-      qs('kpiInteractions').textContent = fmt.format(totals.interactions);
-      qs('kpiFollowerTotal').textContent = latestFollowerTotal(state.platformFilter);
       const comparison = overviewComparisonMonths();
       const currentTotals = overviewTotalsForMonths(comparison.current);
       const previousTotals = overviewTotalsForMonths(comparison.previous);
+      qs('kpiContentTotal').textContent = fmt.format(currentTotals.content);
+      qs('kpiViews').textContent = fmt.format(currentTotals.views);
+      qs('kpiReach').textContent = fmt.format(currentTotals.reach);
+      qs('kpiInteractions').textContent = fmt.format(currentTotals.interactions);
+      qs('kpiFollowerTotal').textContent = latestFollowerTotal(state.platformFilter);
       renderKpiDelta('kpiContentDelta', currentTotals.content, previousTotals.content);
       renderKpiDelta('kpiViewsDelta', currentTotals.views, previousTotals.views);
       renderKpiDelta('kpiReachDelta', currentTotals.reach, previousTotals.reach);
-      const viewerNow = monthlyRowsForMonthsAndView(comparison.current).some(row => row.usesViewers);
-      const viewerBefore = monthlyRowsForMonthsAndView(comparison.previous).some(row => row.usesViewers);
-      if (viewerNow !== viewerBefore) markReachDefinitionChange('kpiReachDelta');
       renderKpiDelta('kpiInteractionsDelta', currentTotals.interactions, previousTotals.interactions);
       renderFollowerGrowthDelta('kpiFollowerDelta', currentTotals.followerGrowth);
       document.querySelectorAll('[data-filter]').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === state.platformFilter));
@@ -2607,6 +2596,24 @@
       const selectedMonths = getSelectedMonths();
       const selectedAggregates = aggregateMonthlyRows(monthlyRowsForView(selectedMonths));
       if (!selectedAggregates.length) return { latest: null, previous: null, compareMonth: '' };
+      if (selectedMonths.length) {
+        const rangeTotal = rows => {
+          if (!rows.length) return null;
+          const result = { ...rows.at(-1) };
+          for (const key of ['posts', 'v', 'r', 'ti']) result[key] = rows.reduce((sum, row) => sum + (row[key] || 0), 0);
+          result.nfg = rows.every(row => Number.isFinite(row.nfg)) ? rows.reduce((sum, row) => sum + row.nfg, 0) : null;
+          result.er = result.r ? result.ti / result.r : null;
+          result.m = rows.length === 1 ? rows[0].m : `${rows[0].m} 至 ${rows.at(-1).m}`;
+          return result;
+        };
+        const previousMonths = previousYearMonths(selectedMonths);
+        const previousRows = aggregateMonthlyRows(monthlyRowsForView(previousMonths));
+        return {
+          latest: rangeTotal(selectedAggregates),
+          previous: previousRows.length === selectedMonths.length ? rangeTotal(previousRows) : null,
+          compareMonth: previousMonths.join('、')
+        };
+      }
       const latest = selectedAggregates.at(-1);
       const allAggregates = aggregateMonthlyRows(monthlyRowsForView([]));
       const [year, month] = latest.m.split('-').map(Number);
@@ -2623,7 +2630,6 @@
       setMonthlyKpi('monthKpiContentTotal', 'monthKpiContentDelta', latest?.posts, previous?.posts, value => fmt.format(value));
       setMonthlyKpi('monthKpiViews', 'monthKpiViewsDelta', latest?.v, previous?.v, value => fmt.format(value));
       setMonthlyKpi('monthKpiReach', 'monthKpiReachDelta', latest?.r, previous?.r, value => fmt.format(value));
-      if (!!latest?.usesViewers !== !!previous?.usesViewers) markReachDefinitionChange('monthKpiReachDelta');
       setMonthlyKpi('monthKpiInteractions', 'monthKpiInteractionsDelta', latest?.ti, previous?.ti, value => fmt.format(value));
       setMonthlyKpi('monthKpiFollowers', 'monthKpiFollowersDelta', latest?.ft, previous?.ft, value => fmt.format(value));
     }
@@ -2631,6 +2637,7 @@
     function setMonthlyKpi(valueId, deltaId, value, previous, formatter) {
       const valueEl = qs(valueId);
       const deltaEl = qs(deltaId);
+      deltaEl.hidden = false;
       valueEl.textContent = value == null ? '-' : formatter(value);
       deltaEl.classList.remove('positive', 'negative');
       if (value == null || previous == null) {
@@ -2662,14 +2669,12 @@
       if (!latest || !previous) return [];
       const metricDefs = [
         { key: 'v', label: '觀看次數', tag: '流量', format: value => fmt.format(value) },
-        { key: 'r', label: '觸及／瀏覽者人數', tag: '觸及／瀏覽者', format: value => fmt.format(value) },
+        { key: 'r', label: '觸及人數', tag: '觸及／瀏覽者', format: value => fmt.format(value) },
         { key: 'ti', label: '總互動數', tag: '互動', format: value => fmt.format(value) },
         { key: 'er', label: '互動率', tag: '品質', format: value => pct(value) },
         { key: 'nfg', label: '追蹤人數增長', tag: '追蹤', format: value => fmt.format(Math.round(value)) }
       ];
-      const changes = metricDefs.filter(metric =>
-        !(['r', 'er'].includes(metric.key) && !!latest.usesViewers !== !!previous.usesViewers)
-      ).map(metric => {
+      const changes = metricDefs.map(metric => {
         const current = latest[metric.key];
         const base = previous[metric.key];
         const diff = current - base;
@@ -2893,7 +2898,7 @@
       const rows = [
         ['發布日期', facebook?.d, instagram?.d, 'text'],
         ['觀看次數', facebook?.v, instagram?.v, 'number'],
-        ['觸及／瀏覽者人數', facebook?.r, instagram?.r, 'number'],
+        ['觸及人數', facebook?.r, instagram?.r, 'number'],
         ['人數指標來源', facebook ? (facebook.usesViewers ? '瀏覽者人數' : '觸及人數') : '-', instagram ? '觸及人數' : '-', 'text'],
         ['按讚/心情', facebook?.l, instagram?.l, 'number'],
         ['留言數', facebook?.cm, instagram?.cm, 'number'],
